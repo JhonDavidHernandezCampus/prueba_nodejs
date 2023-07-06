@@ -10,6 +10,13 @@ ORDER BY bodegas.nombre;
 
 INSERT INTO bodegas(id,nombre,id_responsable,estado,created_by,update_by,created_at,updated_at,deleted_at) VALUES (?,?,?,?,?,?,?,?,?); 
 
+SELECT B.nombre as nombre_bodega,P.nombre as nombre_Producto, SUM(I.cantidad) as total
+FROM productos P 
+INNER JOIN inventarios I ON P.id= I.id_producto 
+INNER JOIN bodegas B ON B.id=I.id_bodega
+GROUP BY B.nombre,P.nombre;
+
+
 CREATE TABLE users(
     id BIGINT(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255),

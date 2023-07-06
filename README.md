@@ -30,6 +30,9 @@ npm i -E -D mysql2
 
 // https://github.com/sidorares/node-mysql2
 
+# Rutas creadas, Cuales son y que me retorna cada una.
+
+Rutas para la tabla bodegas 
 
 
 

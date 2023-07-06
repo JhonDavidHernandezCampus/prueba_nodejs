@@ -18,6 +18,21 @@ routes.get('/', (req, res)=>{
     );
 })
 
+/* data de ejemplo para insertar 
+{
+    "id": 921,
+    "nombre": "A Bodega",
+    "id_responsable": 11,
+    "estado": 1,
+    "created_by": null,
+    "update_by": null,
+    "created_at": "2023-05-25T06:02:57.000Z",
+    "updated_at": "2023-05-25T06:02:57.000Z",
+    "deleted_at": null
+    
+}
+*/
+
 routes.post('/', (req,res)=>{
     let data = Object.values(req.body);
     conx.query(
