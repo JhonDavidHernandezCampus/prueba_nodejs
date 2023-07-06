@@ -4,6 +4,12 @@ CREATE DATABASE db_prueba_nodejs;
 CREATE DATABASE db_prueba_nodejs;
 USE db_prueba_nodejs ;
 
+#consultas de la prueba
+SELECT * FROM bodegas
+ORDER BY bodegas.nombre;
+
+INSERT INTO bodegas(id,nombre,id_responsable,estado,created_by,update_by,created_at,updated_at,deleted_at) VALUES (?,?,?,?,?,?,?,?,?); 
+
 CREATE TABLE users(
     id BIGINT(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255),
