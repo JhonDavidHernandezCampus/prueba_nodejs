@@ -47,6 +47,7 @@ routes.post('/', (req,res)=>{
                     "Status":200,
                     "Message": "La data se ha insertado correctamente"
                 });
+                console.log(data);
             }
         }
     );
