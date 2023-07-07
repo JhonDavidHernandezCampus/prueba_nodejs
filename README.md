@@ -35,5 +35,8 @@ npm i -E -D mysql2
 Rutas para la tabla bodegas 
 
 
+Rutas para la tabla productos
 
+
+Rutas para la tabla inventarios 
 

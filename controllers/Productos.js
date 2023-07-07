@@ -23,15 +23,9 @@ routes.get('/', (req,res)=>{
 
 /* 
 {
-    "id": 11,
     "nombre": "producto0",
     "descripcion": "producto0",
-    "estado": 1,
-    "created_by": 16,
-    "update_by": null,
-    "created_at": null,
-    "updated_at": null,
-    "deleted_at": null
+    "estado": 1
 }
 */
 routes.post('/insertar', (req,res)=>{
@@ -43,9 +37,8 @@ routes.post('/insertar', (req,res)=>{
                 console.log("ha ocurrido un error al insertar la data", err);
                 res.send(err)
             }else{
-
                 let id = Math.floor(Math.random() * (50 - 1 +1 )) +1;
-                conx.query(`SELECT * FROM inventarios`, (err,data2,fil)=>{
+                conx.query(/* sql */`SELECT * FROM inventarios`, (err,data2,fil)=>{
                     let ids = data2.map(obj => obj.id_bodega)
                     let dentra = true;
                     console.log(ids);
