@@ -70,6 +70,20 @@ routes.post('/insertar', (req,res)=>{
         }
     );
 });
+
+/* 
+{
+    "id_bodega_original":19,
+    "id_bodega_destino":19,
+    "id_producto":112,
+    "cantidad":1
+}
+
+*/
+
+
+
+
 routes.put('/transladar', async (req,res)=>{
     let databody = req.body;
     //console.log(`SELECT * FROM bodegas WHERE id = ${databody.id_bodega_original}`);
