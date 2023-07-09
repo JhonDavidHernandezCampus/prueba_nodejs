@@ -5,7 +5,7 @@ CREATE DATABASE db_prueba_nodejs;
 USE db_prueba_nodejs ;
 
 #consultas de la prueba
-SELECT * FROM bodegas
+SELECT * FROM bodegas;
 ORDER BY bodegas.nombre;
 INSERT INTO productos(nombre,descripcion,estado) VALUES ("caracol","conchas de caracol",1);
 
@@ -13,8 +13,10 @@ INSERT INTO bodegas(id,nombre,id_responsable,estado,created_by,update_by,created
 
 SHOW COLUMNS FROM inventarios;
 SHOW COLUMNS FROM bodegas;
-SELECT * FROM bodegas;
+SELECT * FROM productos;
+SELECT * FROM historiales;
 SELECT * FROM inventarios;
+SELECT * FROM inventarios WHERE id_bodega = 19 AND id_producto = 20;
 SELECT B.nombre as nombre_bodega,P.nombre as nombre_Producto, SUM(I.cantidad) as total
 FROM productos P 
 INNER JOIN inventarios I ON P.id= I.id_producto 

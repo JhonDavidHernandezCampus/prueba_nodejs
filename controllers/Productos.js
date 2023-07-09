@@ -2,6 +2,7 @@ import conx from './../config/db.js';
 import express from 'express';
 const routes = express.Router();
 
+
 routes.get('/', (req,res)=>{
     conx.query(
         `SELECT B.nombre as Nombre_bodega,P.nombre as Nombre_producto, SUM(I.cantidad) as total_de_producto
@@ -69,5 +70,120 @@ routes.post('/insertar', (req,res)=>{
         }
     );
 });
+routes.put('/transladar', async (req,res)=>{
+    let databody = req.body;
+    //console.log(`SELECT * FROM bodegas WHERE id = ${databody.id_bodega_original}`);
+    const bodegaOriginal = await new Promise((resolve, reject)=>{
+        conx.query(`SELECT * FROM bodegas WHERE id = ${databody.id_bodega_original}`, (err,resbodegas,fil)=>{
+            if (err || resbodegas.length === 0){
+                res.send({"Message": "la bodega original no existe"});
+            }else{
+                resolve(resbodegas);
+            }
+        });
+    })
+    const bodegaDestino = await new Promise((resolve, reject)=>{
+        conx.query(`SELECT * FROM bodegas WHERE id = ${databody.id_bodega_destino}`, (err,resdestino,fil)=>{
+            if(err || resdestino.length === 0){
+                res.send({"Message": "la bodega de destino no existe"});
+            }else{
+                resolve(resdestino);
+            }
+        })
+    })
+    const producto = await new Promise((resolve, rej)=>{
+        conx.query(`SELECT * FROM productos WHERE id= ${databody.id_producto}`, (err,resproductos, fil)=>{
+            if(err || resproductos.length === 0) {
+                res.send({"Message": "el producto selecionado no existe"});S
+            }else{
+                resolve(resproductos);
+            }
+        })
+    })
 
-export default routes;
+    let consultaInventario = `SELECT * FROM inventarios WHERE id_bodega = ${databody.id_bodega_original} AND id_producto = ${databody.id_producto}`;
+    conx.query(consultaInventario,(err,respuestaOriginal,fil)=>{
+        if(respuestaOriginal.length === 0){
+            res.send(`{"Message":"La bodega con el id ${databody.id_bodega_original} no tiene de este producto" }`)
+        }else if(respuestaOriginal[0].cantidad < databody.cantidad){
+                res.send({"Message":"Cantidad del producto insuficientre en este bodega para hacer el tramite"})
+        }else{
+            console.log("dentra");
+
+            let consultaInventariodestiono = `SELECT * FROM inventarios WHERE id_bodega = ${databody.id_bodega_destino} AND id_producto = ${databody.id_producto}`;
+            conx.query(consultaInventariodestiono,(err,respuestaDestino, fil)=>{
+                if(respuestaDestino.length === 0){
+                    console.log("El destino al cual desea enviar no existe asi que se crea uno");
+                    let inserInsert =`INSERT INTO inventarios(id_bodega,id_producto,cantidad) VALUES (${databody.id_bodega_destino},${databody.id_producto},${databody.cantidad})`;
+                    let update = `UPDATE  inventarios SET cantidad = ${respuestaOriginal[0].cantidad - databody.cantidad} WHERE id= ${respuestaOriginal[0].id}`;
+                    conx.query(inserInsert, (err,resinsertados,fil)=>{
+                        if (err) {
+                            res.send(err);
+                        }else{
+                            conx.query(update,(err,respuestaUpdate,fil)=>{
+                                if (err) {
+                                    res.send({"Message":"Ha ocurrido un error" , "Error":err})
+                                }else{
+                                    conx.query(`SELECT * FROM inventarios WHERE id_bodega = ${databody.id_bodega_destino} AND id_producto = ${databody.id_producto}`, (err, dataselect, fil)=>{
+                                        if(err){
+                                            res.send(err);
+                                        }else{
+                                            console.log(dataselect);
+                                            conx.query(`INSERT INTO historiales(cantidad,id_bodega_origen,id_bodega_destino,id_inventario) VALUES (${databody.cantidad},${databody.id_bodega_original},${databody.id_bodega_destino},${dataselect[0].id})`, (err,resdata,fil)=>{
+                                                if(err){
+                                                    console.log("aqui es el error");
+                                                    res.send(err);
+                                                }else{
+                                                    res.send({"Message":"Tramite completado satisfactorianmente"});
+                                                }
+                                            });
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    });
+                }else{
+                    console.log("El destino al cual desea enviar existe entonces se actuañiza");
+
+                    let UpdateResta = `UPDATE inventarios SET cantidad = ${respuestaOriginal[0].cantidad - databody.cantidad} WHERE id_bodega = ${databody.id_bodega_original} AND id_producto = ${databody.id_producto} `; 
+                    let updateSuma = `UPDATE inventarios SET cantidad = ${respuestaDestino[0].cantidad + databody.cantidad}  WHERE id_bodega = ${databody.id_bodega_destino} AND id_producto = ${databody.id_producto} `;
+                    conx.query(updateSuma,(err, resSuma, fil)=>{
+                        if(err){
+                            console.log("error el la suma");
+                            res.send(err);
+                        }else{
+                            conx.query(UpdateResta,(err,resResta,fil)=>{
+                                if (err) {
+                            console.log("error el la resta");
+                                    res.send(err);
+                                }else{
+                                    conx.query(`SELECT * FROM inventarios WHERE id_bodega = ${databody.id_bodega_destino} AND id_producto = ${databody.id_producto}`, (err, dataselect, fil)=>{
+                                        if(err){
+                                            res.send(err);
+                                        }else{
+                                            console.log(dataselect);
+                                            conx.query(`INSERT INTO historiales(cantidad,id_bodega_origen,id_bodega_destino,id_inventario) VALUES (${databody.cantidad},${databody.id_bodega_original},${databody.id_bodega_destino},${dataselect[0].id})`, (err,resdata,fil)=>{
+                                                if(err){
+                                                    console.log("aqui es el error");
+                                                    res.send(err);
+                                                }else{
+                                                    res.send({"Message":"Tramite completado satisfactorianmente"});
+                                                }
+                                            });
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    });
+                }
+            })
+        }
+    }) 
+    /* de aqui para bajo esta la logica para hacer lo que el endponid me require */
+
+    
+});
+
+export default routes;  
