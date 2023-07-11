@@ -2,6 +2,7 @@ import express from 'express';
 import conx from './../config/db.js';
 const routes = express.Router();
 
+
 routes.get('/', (req, res)=>{
     console.log("llegamos aqui");
     conx.query(
@@ -19,7 +20,7 @@ routes.get('/', (req, res)=>{
 })
 
 /* data de ejemplo para insertar o5
-{S
+{
     "id": 921,
     "nombre": "A Bodega",
     "id_responsable": 11,

@@ -3,7 +3,7 @@ para este proyecto de prueba se instalaron
 se instala con npm init -y
 
 
-# nodemon
+# Nodemon
 npm i -E -D nodemon
 
 --Este se instala para la ejeccucion de node en cada cambio realizado en el archivo app.js
@@ -11,41 +11,56 @@ npm i -E -D nodemon
 # Express
 npm i -E express
 
---este se usa para el enrrutado, los endpionds de la aplicacion
+- Este se usa para el enrrutado, los endpionds de la aplicacion
 
 // https://expressjs.com/es/4x/api.html#express
 
 # Dotenv
-
+```
 npm i -E -D dotenv
+```
 
---este es el que me permite manejar las variables de entorno
+- Este es el que me permite manejar las variables de entorno
+las colco de forma local usando la funcion config()
 
-// https://github.com/motdotla/dotenv
+```javascript
+import dotenv from 'dotenv';
+dotenv.config();
+```
+
+luego ya puedes acceder a las variables de entorno asi: 
+```javascript
+let config = JSON.parse(process.env.MY_CONNECT);
+```
+
+- https://github.com/motdotla/dotenv
 
 # Mysql2
+```
 npm i -E -D mysql2
+```
 
---este es una interfas patra interactuar con bases de datos MySQL esmucho mas rapida y efectiva.
+- Este es una interfas patra interactuar con bases de datos MySQL esmucho mas rapida y efectiva.
 
 // https://github.com/sidorares/node-mysql2
 
-# Rutas creadas, Cuales son y que me retorna cada una.
+# Rutas creadas
 
-# Rutas para la tabla bodegas 
+### Rutas para la tabla bodegas 
 
-Ruta 1 
-method = GET
+###### Ruta 1 
+- Method = GET
 http://127.121.12.6:9102/bodegas
 
-Lista las bodegas en orden alfabetico
+- Lista las bodegas en orden alfabetico
 
-Ruta 2
-method = POST
+###### Ruta 2
+- Method = POST
 http://127.121.12.6:9102/bodegas
 
-Me inserta una nueba bodega 
-ejemplode data a enviar
+- Me inserta una nueba bodega 
+- Ejemplo de data a enviar
+```json
 {
     "id": 921,
     "nombre": "A Bodega",
@@ -58,64 +73,68 @@ ejemplode data a enviar
     "deleted_at": null
     
 }
+```
 
 
+### Rutas para la tabla productos
 
-# Rutas para la tabla productos
+###### Ruta 1
+- Esta ruta me permite pasar productos de una bodega a otra 
+- Ejemplo de data  a enviar
 
-Ruta 1
-Esta ruta me permite pasar productos de una bodega a otra 
---ejemplo de data  a enviar
+```json
 {
     "id_bodega_original":19,
     "id_bodega_destino":19,
     "id_producto":112,
     "cantidad":1
 }
-method : PUT
+```
+- Method: PUT
 http://127.121.12.6:9102/productos/transladar
 
-Ruta 2
-method = GET
+###### Ruta 2
+- Method = GET
 http://127.121.12.6:9102/productos
 
-Esta ruta me listala cantidad de producto en cada bodega de forma desendiente
+- Esta ruta me listala cantidad de producto en cada bodega de forma desendiente
 
-Ruta 3
-mrthod = POST
-
+###### Ruta 3
+- Method = POST
 http://127.121.12.6:9102/productos/insertar
 
-Esta ruta me inserta un dato en productos
-Ejemplo de data:
+- Esta ruta me inserta un dato en productos
+- Ejemplo de data:
+```json
 {
     "nombre": "producto0",
     "descripcion": "producto0",
     "estado": 1
 }
+```
 
 
+### Rutas para la tabla inventarios 
 
 
-# Rutas para la tabla inventarios 
-
-
-method = POST
+- Method = POST
 http://127.121.12.6:9102/inventario
 
---Esta ruta me permite insertar un producto a una bodega
-Ejemplo de data
+- Esta ruta me permite insertar un producto a una bodega
+- Ejemplo de data
+```json
 {
     "id_bodega":50,
     "id_producto":22,
     "cantidad":12
 }
+```
 
+#### Instalamos la libreria para manejar DTO y Configuramos nuestro entorno de desarrollo
 
-
-# Instalamos la libreria para manejar DTO y Configuramos nuestro entorno de desarrollo
-
+``` 
 npm init -y
+```
 
 <Permite convertir objetos JavaScript/TypeScript en estructuras de datos JSON y viceversa>
 npm i -E -D class-transformer
@@ -129,13 +148,15 @@ npm i -E -D typescript
 <Esta libreria es para ejecutar los cambios en el servidor en tiempo real>
 npm i -E -D nodemon
 
---como debe estar el package.json
+- Como debe estar el package.json
+```json
   "scripts": {
     "dev":"nodemon ./app",
     "tsc": "tsc -w"
   },
-
-creamos el archivo tscongig.json y colocamos lo siguiente
+```
+- Creamos el archivo tscongig.json y colocamos lo siguiente
+```json
 {
     "compilerOptions": {
         "target": "es6", 
@@ -147,8 +168,11 @@ creamos el archivo tscongig.json y colocamos lo siguiente
         "emitDecoratorMetadata": true
     }
 }
-
-luego hacemos validos los cambios de la siguientre manera
--- Agregamos esta linea en el archico package.json
+```
+##### luego hacemos validos los cambios de la siguientre manera
+- Agregamos esta linea en el archico package.json
+    ```
     "tsc": "tsc -w"
+    ```
+    - Quedando el archivo asi
 y despues tenemos el comando tsc __nombredelArchivo
