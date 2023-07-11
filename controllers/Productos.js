@@ -86,7 +86,6 @@ routes.post('/insertar', (req,res)=>{
 
 routes.put('/transladar', async (req,res)=>{
     let databody = req.body;
-    //console.log(`SELECT * FROM bodegas WHERE id = ${databody.id_bodega_original}`);
     const bodegaOriginal = await new Promise((resolve, reject)=>{
         conx.query(`SELECT * FROM bodegas WHERE id = ${databody.id_bodega_original}`, (err,resbodegas,fil)=>{
             if (err || resbodegas.length === 0){
@@ -127,7 +126,6 @@ routes.put('/transladar', async (req,res)=>{
             let consultaInventariodestiono = `SELECT * FROM inventarios WHERE id_bodega = ${databody.id_bodega_destino} AND id_producto = ${databody.id_producto}`;
             conx.query(consultaInventariodestiono,(err,respuestaDestino, fil)=>{
                 if(respuestaDestino.length === 0){
-                    console.log("El destino al cual desea enviar no existe asi que se crea uno");
                     let inserInsert =`INSERT INTO inventarios(id_bodega,id_producto,cantidad) VALUES (${databody.id_bodega_destino},${databody.id_producto},${databody.cantidad})`;
                     let update = `UPDATE  inventarios SET cantidad = ${respuestaOriginal[0].cantidad - databody.cantidad} WHERE id= ${respuestaOriginal[0].id}`;
                     conx.query(inserInsert, (err,resinsertados,fil)=>{
@@ -142,10 +140,8 @@ routes.put('/transladar', async (req,res)=>{
                                         if(err){
                                             res.send(err);
                                         }else{
-                                            console.log(dataselect);
                                             conx.query(`INSERT INTO historiales(cantidad,id_bodega_origen,id_bodega_destino,id_inventario) VALUES (${databody.cantidad},${databody.id_bodega_original},${databody.id_bodega_destino},${dataselect[0].id})`, (err,resdata,fil)=>{
                                                 if(err){
-                                                    console.log("aqui es el error");
                                                     res.send(err);
                                                 }else{
                                                     res.send({"Message":"Tramite completado satisfactorianmente"});
@@ -164,7 +160,6 @@ routes.put('/transladar', async (req,res)=>{
                     let updateSuma = `UPDATE inventarios SET cantidad = ${respuestaDestino[0].cantidad + databody.cantidad}  WHERE id_bodega = ${databody.id_bodega_destino} AND id_producto = ${databody.id_producto} `;
                     conx.query(updateSuma,(err, resSuma, fil)=>{
                         if(err){
-                            console.log("error el la suma");
                             res.send(err);
                         }else{
                             conx.query(UpdateResta,(err,resResta,fil)=>{
@@ -176,10 +171,8 @@ routes.put('/transladar', async (req,res)=>{
                                         if(err){
                                             res.send(err);
                                         }else{
-                                            console.log(dataselect);
                                             conx.query(`INSERT INTO historiales(cantidad,id_bodega_origen,id_bodega_destino,id_inventario) VALUES (${databody.cantidad},${databody.id_bodega_original},${databody.id_bodega_destino},${dataselect[0].id})`, (err,resdata,fil)=>{
                                                 if(err){
-                                                    console.log("aqui es el error");
                                                     res.send(err);
                                                 }else{
                                                     res.send({"Message":"Tramite completado satisfactorianmente"});
@@ -196,8 +189,6 @@ routes.put('/transladar', async (req,res)=>{
         }
     }) 
     /* de aqui para bajo esta la logica para hacer lo que el endponid me require */
-
-    
 });
 
 export default routes;  

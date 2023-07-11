@@ -112,3 +112,43 @@ Ejemplo de data
 }
 
 
+
+# Instalamos la libreria para manejar DTO y Configuramos nuestro entorno de desarrollo
+
+npm init -y
+
+<Permite convertir objetos JavaScript/TypeScript en estructuras de datos JSON y viceversa>
+npm i -E -D class-transformer
+
+<Una dependencia requerida por class-transformer. Proporciona la capacidad de utilizar metadatos de decoradores en tiempo de ejecución en TypeScript>
+npm i -E -D reflect-metadata
+
+<Es un lenguaje de programación basado en JavaScript que agrega características de tipo estático a JavaScript>
+npm i -E -D typescript
+
+<Esta libreria es para ejecutar los cambios en el servidor en tiempo real>
+npm i -E -D nodemon
+
+--como debe estar el package.json
+  "scripts": {
+    "dev":"nodemon ./app",
+    "tsc": "tsc -w"
+  },
+
+creamos el archivo tscongig.json y colocamos lo siguiente
+{
+    "compilerOptions": {
+        "target": "es6", 
+        "module": "ES6", 
+        "moduleResolution": "node",
+        "outDir": "./controller", 
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    }
+}
+
+luego hacemos validos los cambios de la siguientre manera
+-- Agregamos esta linea en el archico package.json
+    "tsc": "tsc -w"
+y despues tenemos el comando tsc __nombredelArchivo

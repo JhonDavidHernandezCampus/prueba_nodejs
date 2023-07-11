@@ -18,8 +18,8 @@ routes.get('/', (req, res)=>{
     );
 })
 
-/* data de ejemplo para insertar 
-{
+/* data de ejemplo para insertar o5
+{S
     "id": 921,
     "nombre": "A Bodega",
     "id_responsable": 11,
