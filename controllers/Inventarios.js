@@ -1,4 +1,5 @@
 import conx from './../config/db.js';
+import ProxyInventario from './../middleware/proxyInventario.js';
 import express from 'express';
 const router = express.Router();
 
@@ -12,7 +13,8 @@ data
 }
 
 */
-router.post('/',(req, res)=>{
+router.post('/',ProxyInventario,(req, res)=>{
+    console.log("estamos aqui en inventarios");
     let queryselect = `SELECT * FROM inventarios`;
     let existecampo = false;
     conx.query(queryselect, (err,dataselect,fil)=>{
@@ -25,13 +27,13 @@ router.post('/',(req, res)=>{
                 if(obj.id_bodega === req.body.id_bodega && obj.id_producto === req.body.id_producto){
                     existecampo = true;
                     console.log(obj.id);
-                        console.log("llega aqui");
+                        console.log("llega aqui para la aptualizacion");
                         conx.query(`UPDATE inventarios SET cantidad = ${obj.cantidad + req.body.cantidad} WHERE id= ${obj.id}`,(err,respuesta,fil)=>{
                             if(err){
                                 console.log("Error al insertar la data");
                                 res.send(respuesta);
                             }else{
-                                res.send(respuesta)
+                                res.send({"Status":"200", "Message":"Registro ya existente asi que se actualiza"})
                             }
                         });
                     break;

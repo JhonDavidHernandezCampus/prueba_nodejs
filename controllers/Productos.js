@@ -1,5 +1,6 @@
 import conx from './../config/db.js';
 import express from 'express';
+import ProxyProductos from './../middleware/proxyProductos.js';
 const routes = express.Router();
 
 
@@ -29,7 +30,7 @@ routes.get('/', (req,res)=>{
     "estado": 1
 }
 */
-routes.post('/insertar', (req,res)=>{
+routes.post('/insertar',ProxyProductos,(req,res)=>{
     let databody = req.body;
     //console.log(databody);
     let queryProductos= `INSERT INTO productos(nombre,descripcion,estado) VALUES ("${databody.nombre}","${databody.descripcion}",${databody.estado})`;
@@ -80,9 +81,6 @@ routes.post('/insertar', (req,res)=>{
 }
 
 */
-
-
-
 
 routes.put('/transladar', async (req,res)=>{
     let databody = req.body;

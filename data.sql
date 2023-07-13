@@ -12,8 +12,11 @@ INSERT INTO productos(nombre,descripcion,estado) VALUES ("caracol","conchas de c
 INSERT INTO bodegas(id,nombre,id_responsable,estado,created_by,update_by,created_at,updated_at,deleted_at) VALUES (?,?,?,?,?,?,?,?,?); 
 
 SHOW COLUMNS FROM inventarios;
+SHOW COLUMNS FROM productos;
+select * from productos;
 SHOW COLUMNS FROM bodegas;
-SELECT * FROM productos;
+SELECT * FROM bodegas;
+SELECT * FROM productos where id=22;
 SELECT * FROM historiales;
 SELECT * FROM inventarios;
 SELECT * FROM inventarios WHERE id_bodega = 19 AND id_producto = 20;

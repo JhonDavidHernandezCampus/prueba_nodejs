@@ -1,9 +1,10 @@
 import express from 'express';
 import conx from './../config/db.js';
+import proxyBodegas from './../middleware/proxyBodegas.js';
 const routes = express.Router();
 
 
-routes.get('/', (req, res)=>{
+routes.get('/',(req, res)=>{
     console.log("llegamos aqui");
     conx.query(
         /* sql */ `SELECT * FROM bodegas
@@ -27,18 +28,18 @@ routes.get('/', (req, res)=>{
     "estado": 1,
     "created_by": null,
     "update_by": null,
-    "created_at": "2023-05-25T06:02:57.000Z",
-    "updated_at": "2023-05-25T06:02:57.000Z",
     "deleted_at": null
     
 }
 */
 
-routes.post('/', (req,res)=>{
+routes.post('/', proxyBodegas,(req,res)=>{
     let data = Object.values(req.body);
+    console.log(req.body);
+    console.log("si estoy donde es");
     conx.query(
-        `INSERT INTO bodegas(id,nombre,id_responsable,estado,created_by,update_by) VALUES (?,?,?,?,?,?); 
-        `,data, 
+        `INSERT INTO bodegas SET ?; 
+        `,req.body,  //aunque paresta que no tiene sentido el mysql2 valida directamente los campos en el req.body y los arganiza en la query
         (err, data, fil)=>{
             if(err){
                 console.log("Ha ocuriido un error en la consulta", err);

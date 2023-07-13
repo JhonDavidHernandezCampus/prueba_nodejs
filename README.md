@@ -11,7 +11,7 @@ npm i -E -D nodemon
 # Express
 npm i -E express
 
-- Este se usa para el enrrutado, los endpionds de la aplicacion
+- Este se usa para el enrrutado, los endpionds de la aplicacion y para crear el servidor 
 
 // https://expressjs.com/es/4x/api.html#express
 
@@ -146,7 +146,7 @@ npm i -E -D reflect-metadata
 npm i -E -D typescript
 
 <Esta libreria es para ejecutar los cambios en el servidor en tiempo real>
-npm i -E -D nodemon
+npm i -E -D nodemon  
 
 - Como debe estar el package.json
 ```json
